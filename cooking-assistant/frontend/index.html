@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кулинарный Помощник</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Кулинарный Помощник</h1>
+            <nav>
+                <ul>
+                    <li><a href="/">Главная</a></li>
+                    <li><a href="/recipes">Рецепты</a></li>
+                    <li><a href="/add-recipe">Добавить рецепт</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <h2>Добро пожаловать на кулинарный помощник!</h2>
+            <p>Найдите идеальный рецепт для любого случая</p>
+            <a href="/recipes" class="btn">Посмотреть рецепты</a>
+        </section>
+
+        <section class="featured-recipes">
+            <h2>Популярные рецепты</h2>
+            <div class="recipes-grid" id="featured-recipes">
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 AveRake</p>
+        </div>
+    </footer>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
