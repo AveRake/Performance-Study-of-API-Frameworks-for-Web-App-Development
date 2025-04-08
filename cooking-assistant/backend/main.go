@@ -7,11 +7,14 @@ import (
 	"path/filepath"
 
 	"cooking-assistant/handlers"
+	"cooking-assistant/storage"
 
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
+	storage.InitDB()
+
 	r := gin.Default()
 
 	api := r.Group("/api")
@@ -39,7 +42,10 @@ func main() {
 	r.NoRoute(serveFrontend(filepath.Join(frontendPath, "index.html")))
 
 	log.Println("Server is running on http://localhost:8080")
-	r.Run(":8080")
+	log.Println("SQLite database file: backend/recipes.db")
+	if err := r.Run(":8080"); err != nil {
+		log.Fatal("Failed to start server:", err)
+	}
 }
 
 func serveFrontend(file string) gin.HandlerFunc {

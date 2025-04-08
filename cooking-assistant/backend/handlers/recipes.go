@@ -18,18 +18,13 @@ func GetRecipes(c *gin.Context) {
 func GetRecipe(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid recipe ID"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Неверный ID рецепта"})
 		return
 	}
 
-	recipe, err := storage.GetRecipe(id)
+	recipe, err := storage.GetRecipe(uint(id))
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-
-	if recipe == nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Recipe not found"})
+		c.JSON(http.StatusNotFound, gin.H{"error": "Рецепт не найден"})
 		return
 	}
 
@@ -48,9 +43,9 @@ func CreateRecipe(c *gin.Context) {
 }
 
 func UpdateRecipe(c *gin.Context) {
-	id, err := strconv.Atoi(c.Param("id"))
+	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid recipe ID"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Неверный ID рецепта"})
 		return
 	}
 
@@ -60,9 +55,10 @@ func UpdateRecipe(c *gin.Context) {
 		return
 	}
 
-	updatedRecipe.ID = id
-	if success := storage.UpdateRecipe(id, updatedRecipe); !success {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Recipe not found"})
+	updatedRecipe.ID = uint(id)
+
+	if success := storage.UpdateRecipe(uint(id), updatedRecipe); !success {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Рецепт не найден"})
 		return
 	}
 
@@ -72,14 +68,14 @@ func UpdateRecipe(c *gin.Context) {
 func DeleteRecipe(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid recipe ID"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Неверный ID рецепта"})
 		return
 	}
 
-	if success := storage.DeleteRecipe(id); !success {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Recipe not found"})
+	if success := storage.DeleteRecipe(uint(id)); !success {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Рецепт не найден"})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Recipe deleted successfully"})
+	c.JSON(http.StatusOK, gin.H{"message": "Рецепт успешно удален"})
 }
